@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name=viewport content="width=device-width,initial-scale=1,maximu-scale=1,user-scalable=no">
+
+  <style>
+    body{
+      background-color: black;
+    }
+    .btn {
+      position: relative;
+      display: inline-block;
+      left: 100px;
+      top: 50px;
+      width: 200px;
+      height: 80px;
+      color: white;
+      line-height: 80px;
+      font-size: 35px;
+      font-family: sans-serif;
+      text-decoration: none;
+      text-transform: uppercase;
+      text-align: center;
+      border-radius: 30px;
+      background: linear-gradient(-45deg, rgb(39, 122, 218), rgb(74, 230, 121), rgb(201, 214, 13), rgb(226, 20, 233), rgb(16, 172, 219));
+      background-size: 400%;
+      text-shadow: 0 0 5px white;
+    }
+    .btn:hover {
+      animation: move 5s linear infinite;
+    }
+    .btn::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: -10px;
+      width: 220px;
+      height: 100px;
+      background: linear-gradient(-45deg, rgb(39, 122, 218), rgb(74, 230, 121), rgb(243, 169, 10), rgb(226, 20, 233), rgb(16, 172, 219));
+      background-size: 400%;
+      z-index: -1;
+      border-radius: 30px;
+      opacity: 0;
+      transition: 0.6s;
+    }
+    .btn:hover::before {
+      filter: blur(15px);
+      opacity: 1;
+      animation: move 5s linear infinite;
+    }
+
+    @keyframes move {
+      0% {
+        background-position: 0%;
+      }
+
+      100% {
+        background-position: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#" class="btn">button</a>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+</head>
+
+<body>
+  <div>
+
+  </div>
+</body>
+<script>
+  let data = {
+    name: '张三',
+    age: 12
+  }
+  let vm = {}
+  vm._data = data;// 将数据data定义到_data
+  for (let key in data) {
+    proxy(vm, key);//循环代理所有的属性
+  }
+  function proxy(vm, key) {
+    //属性数据劫持在vm上面
+    Object.defineProperty(vm, key, {
+      get() {
+        return vm._data[key];
+      },
+      set(newValue) {
+        // 代理到_data上面  vm.name === vm._data.name
+        vm._data[key] = newValue;
+      }
+    })
+  }
+  function observe(data) {//观测数据，用于递归劫持与跳出
+    if (typeof data !== 'object' || data === null) return;
+    if (data.__ob__) return
+    return new Observe(data);
+  }
+  class Observe {
+    constructor(val) {
+      this.walk(val);
+    }
+    walk(data) {// 循环数据，对对象上的数据进行观测
+      let keys = Object.keys(data);
+      for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        let value = data[key];
+        defineReactive(data, key, value);
+      }
+    }
+  }
+  function defineReactive(data, key, value) {
+    // 递归调用，vue2慢的原因就是这里
+    observe(value);// value有可能也是个对象
+    Object.defineProperty(data, key, {
+      get() {
+        return value;
+      },
+      set(newValue) {
+        console.log('编译')
+        if (newValue === value) return;
+        observe(newValue);//新设置的值也有可能是个对象
+        value = newValue;
+      }
+    })
+  }
+  observe(data);
+
+
+
+
+
+</script>
+
+</html>
